@@ -9,6 +9,7 @@ const db = mongoose.connection
 
 //Here, Import the `models/student.js` to variable and called 'Student'
 // const Student = ...??
+const Student = require("../models/student.js")
 
 const done = function () { // eslint-disable-line no-unused-vars
   db.close()
@@ -17,23 +18,62 @@ const done = function () { // eslint-disable-line no-unused-vars
 
 const create = function (firstName, lastName, grade, age, city) {
   /* Add Code Here */
+  const studentParams = {
+    
+      firstName: firstName,
+      lastName: lastName,
+      grade:grade,
+      age: age,
+      city: city
+    }
+    Student.create(studentParams)
+    // .then(student=>console.log(student.toJSON()))
+    .then((student) => console.log(student))
+    .catch(console.error)
+    .then(done)
+
 }
 
 const index = function () {
   /* Add Code Here */
+  Student.find()
+  .then((students) => {
+    students.forEach((student) => console.log(student))
+  })
+  .catch(console.error)
+  .then(done)
   
 }
 
 const show = function (id) {
   /* Add Code Here */
+  Student.findById(id)
+  .then((student) => console.log(student))
+  .catch(console.error)
+  .then(done)
 }
 
 const destroy = function (id) {
   /* Add Code Here */
+  Student.findById(id)
+  .then(student => student.remove)
+  .catch(console.error)
+  .then(done)
+
 }
 
 const update = function (id, field, value) {
   /* Add Code Here */
+  Student.findById(id)
+  .then(student => {
+    student[field] = value
+
+    return student.save()
+  })
+
+  .then(student => console.log(student.toJSON()))
+  .catch(console.error)
+  .then(done)
 }
 
 
